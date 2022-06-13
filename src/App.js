@@ -1,22 +1,15 @@
-import logo from './logo.svg'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+
 import './App.css'
+import LoginPage from './pages/authentication/login/LoginPage'
 
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>Serverless B&B</p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Group 6 Serverless
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path='/login' element={<LoginPage />} />
+      </Routes>
+    </Router>
   )
 }
 
