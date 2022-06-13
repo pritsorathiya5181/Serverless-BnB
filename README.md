@@ -3,7 +3,7 @@
 # Project: Serverless B&B
 
 - _Date Created_: 2 Jun 2022
-- _Last Modification Date_: 2 Jun 2022
+- _Last Modification Date_: 13 Jun 2022
 - _Group repository git URL_: <https://git.cs.dal.ca/psorathiya/csci5410_group6>
 
 ## Authors
