@@ -1,0 +1,67 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-csci5410group6-dev-131445-authRole",
+      "UnauthRoleArn": "arn:aws:iam::403229885123:role/amplify-csci5410group6-dev-131445-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::403229885123:role/amplify-csci5410group6-dev-131445-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-csci5410group6-dev-131445-deployment",
+      "UnauthRoleName": "amplify-csci5410group6-dev-131445-unauthRole",
+      "StackName": "amplify-csci5410group6-dev-131445",
+      "StackId": "arn:aws:cloudformation:us-east-1:403229885123:stack/amplify-csci5410group6-dev-131445/c32fbc20-f88f-11ec-920a-0e9c020fd085",
+      "AmplifyAppId": "d1vvu9q67sd14o"
+    }
+  },
+  "auth": {
+    "csci5410group6": {
+      "service": "Cognito",
+      "serviceType": "managed",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": []
+        },
+        "mfaTypes": [],
+        "verificationMechanisms": []
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-csci5410group6-dev-131445-deployment/amplify-cfn-templates/auth/csci5410group6-cloudformation-template.json",
+        "logicalId": "authcsci5410group6"
+      },
+      "lastPushTimeStamp": "2022-06-30T16:21:06.340Z",
+      "output": {
+        "IdentityPoolId": "us-east-1:f2220f75-da92-4f98-8126-fa44b8d42f3b",
+        "IdentityPoolName": "csci5410group6_identitypool_528d3c58__dev"
+      },
+      "lastPushDirHash": "mecl1TCkaEBupsXsv6E2GUhkqUA="
+    }
+  },
+  "interactions": {
+    "lex27c7cd89": {
+      "service": "Lex",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "lastPackageTimeStamp": "2022-06-30T16:19:31.095Z",
+      "distZipFilename": "lex27c7cd89-57484536373946424234-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-csci5410group6-dev-131445-deployment",
+        "s3Key": "amplify-builds/lex27c7cd89-57484536373946424234-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-csci5410group6-dev-131445-deployment/amplify-cfn-templates/interactions/lex27c7cd89-cloudformation-template.json",
+        "logicalId": "interactionslex27c7cd89"
+      },
+      "lastPushTimeStamp": "2022-06-30T16:21:06.340Z",
+      "output": {
+        "FunctionArn": "arn:aws:lambda:us-east-1:403229885123:function:csci5410group6_cfnlambda_8bd5a6f7-dev",
+        "Region": "us-east-1",
+        "BotName": "BookTrip_dev"
+      },
+      "lastPushDirHash": "h4K9Q3KDllfl6xwhX0miRORS5Lg="
+    }
+  }
+}

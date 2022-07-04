@@ -1,0 +1,12 @@
+{
+  "version": "1",
+  "cognitoConfig": {
+    "identityPoolName": "csci5410group6_identitypool_528d3c58",
+    "allowUnauthenticatedIdentities": true,
+    "authSelections": "identityPoolOnly",
+    "resourceName": "csci5410group6",
+    "sharedId": "528d3c58",
+    "serviceName": "Cognito",
+    "useDefault": "manual"
+  }
+}
