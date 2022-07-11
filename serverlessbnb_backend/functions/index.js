@@ -24,5 +24,5 @@ app.use('/security/', cipherRouter)
 //   console.log('Server is running on port 5000')
 // })
 
-exports.helloWorld = functions.https.onRequest(app)
+exports.QAAuth = functions.https.onRequest(app)
 exports.cipher = functions.https.onRequest(cipherRouter)

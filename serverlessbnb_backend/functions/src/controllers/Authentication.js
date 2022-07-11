@@ -25,6 +25,42 @@ router.post('/addAnswers', async (req, res) => {
   }
 })
 
+router.post('/getQuestions', async (req, res) => {
+  const db = getFirestore()
+  const { customerId } = req.body
+
+  try {
+    const snapshot = await db
+      .collection(Strings.COLLECTION_NAME)
+      .doc(customerId)
+      .get()
+
+    if (snapshot.exists) {
+      const data = snapshot.data()
+      const { questions: dbQuestions } = data
+
+      if (dbQuestions.length > 0) {
+        res.status(200).send({
+          success: true,
+          message: 'Successfully fetched question',
+          question: dbQuestions,
+        })
+      } else {
+        res
+          .status(400)
+          .send({ success: false, message: 'Error fetching questions' })
+      }
+    } else {
+      res.status(400).send({ success: false, message: 'User does not exist' })
+    }
+  } catch (error) {
+    console.log('fetching question error==', error)
+    res
+      .status(400)
+      .send({ success: false, message: 'Error fetching questions' })
+  }
+})
+
 router.post('/verifyAnswers', async (req, res) => {
   const db = getFirestore()
   const { customerId, questions, answers } = req.body
@@ -63,9 +99,7 @@ router.post('/verifyAnswers', async (req, res) => {
     }
   } catch (error) {
     console.log('verify answer error==', error)
-    res
-      .status(400)
-      .send({ success: false, message: 'Error adding answers to the database' })
+    res.status(400).send({ success: false, message: 'Error verifying answers' })
   }
 })
 
