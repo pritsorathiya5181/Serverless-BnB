@@ -12,25 +12,66 @@ import Reset from './pages/reset'
 import NotFound from './pages/404'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useState, useEffect, useSearchParams } from 'react'
+import { Auth } from 'aws-amplify'
 import CaesarCipher from './pages/caesarCipher'
 
 function App() {
+  const [state, setState] = useState({
+    isAuthenticated: false,
+    user: null,
+  })
+
+  const setAuthStatus = (authenticated) => {
+    setState({ ...state, isAuthenticated: authenticated })
+  }
+
+  const setUser = (user) => {
+    setState({ ...state, user: user })
+  }
+
+  useEffect(() => {
+    async function fetchSession() {
+      try {
+        const session = await Auth.currentSession()
+        setAuthStatus(true)
+        console.log(session)
+        const user = await Auth.currentAuthenticatedUser()
+        setUser(user)
+      } catch (error) {
+        if (error !== 'No current user') {
+          console.log(error)
+        }
+      }
+    }
+    fetchSession()
+  }, [])
+
+  const authProps = {
+    isAuthenticated: state.isAuthenticated,
+    user: state.user,
+    setAuthStatus: setAuthStatus,
+    setUser: setUser,
+  }
   return (
     <Router>
       <div className='min-h-screen flex flex-col'>
-        <Navbar />
+        <Navbar auth={authProps} />
         <div className='flex-1 sm:px-32 px-12 py-12 bg-gray-50'>
           <Routes>
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
-            <Route path='/home' element={<Homepage />} />
-            <Route path='/forgot' element={<Forgot />} />
-            <Route path='/reset' element={<Reset />} />
-            <Route path='/casercipher' element={<CaesarCipher />} />
+            <Route exact path='/' element={<Login auth={authProps} />} />
+            <Route path='/login' element={<Login auth={authProps} />} />
+            <Route path='/signup' element={<Signup auth={authProps} />} />
+            <Route path='/home' element={<Homepage auth={authProps} />} />
+            <Route path='/forgot' element={<Forgot auth={authProps} />} />
+            <Route path='/reset' element={<Reset auth={authProps} />} />
             <Route path='*' element={<NotFound />} />
-
-            {/* <Route path="/chatbot" element={<Chatbot />} />
-            <Route path="/orders" element={<Orders />} /> */}
+            <Route
+              path='/casercipher'
+              element={<CaesarCipher auth={authProps} />}
+            />
+            <Route path='/chatbot' element={<Chatbot auth={authProps} />} />
+            <Route path='/orders' element={<Orders auth={authProps} />} />
           </Routes>
         </div>
         <ToastContainer />
