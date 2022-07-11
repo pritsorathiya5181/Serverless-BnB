@@ -8,7 +8,10 @@
     "@aws-amplify/interactions": "^4.0.26",
     "@aws-amplify/storage": "^4.4.9",
     "@aws-amplify/ui-react": "^2.1.2",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
     "@hookform/resolvers": "^2.9.5",
+    "@mui/material": "^5.8.7",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -58,6 +61,5 @@
     "url": "https://git.cs.dal.ca/psorathiya/csci5410_group6.git"
   },
   "author": "",
-  "license": "ISC",
-  "devDependencies": {}
+  "license": "ISC"
 }
