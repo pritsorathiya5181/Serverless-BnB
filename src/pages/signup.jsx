@@ -11,8 +11,6 @@ const Signup = () => {
   let navigate = useNavigate();
   const validationSchema = Yup.object().shape({
     userName: Yup.string().required("Provide a user name"),
-    firstName: Yup.string().required("Enter your first name"),
-    lastName: Yup.string().required("Enter your last name"),
     emailID: Yup.string().email().required("Enter your Email ID"),
     pswd: Yup.string().required("Create a password for your account"),
     confirmpassword: Yup.string().oneOf([Yup.ref("pswd"), null]),
@@ -24,13 +22,16 @@ const Signup = () => {
   const { errors } = formState;
 
   async function onSubmit({ userName, pswd, emailID }) {
-    console.log(userName);
+    var maxNumber = 1000;
+    var randomNumber = Math.floor(Math.random() * maxNumber + 1);
+    var customerID = "CU" + JSON.stringify(randomNumber);
     try {
       const signUpResponse = await Auth.signUp({
         username: userName,
         password: pswd,
         attributes: {
           email: emailID,
+          "custom:customer": customerID,
         },
       });
       toast.success("Verification lisk sent to registerd emailID.");
@@ -52,10 +53,7 @@ const Signup = () => {
             <p className="text-2xl text-center mb-5 text-black font-bold">
               Signup
             </p>
-            <label
-              htmlFor="userName"
-              className="text-black font-bold text-xl"
-            >
+            <label htmlFor="userName" className="text-black font-bold text-xl">
               User Name
             </label>
             <input
@@ -69,44 +67,7 @@ const Signup = () => {
           </div>
           <p className="text-red-600">{errors.userName?.message}</p>
           <div className="flex flex-col mb-2">
-            <label
-              htmlFor="firstName"
-              className="text-black font-bold text-xl"
-            >
-              First Name
-            </label>
-            <input
-              className="bg-gray-50 outline-none p-2 rounded-lg border-2 border-gray-600"
-              type="text"
-              name="firstName"
-              id="firstName"
-              placeholder="Enter First Name"
-              {...register("firstName")}
-            />
-          </div>
-          <p className="text-red-600">{errors.firstName?.message}</p>
-          <div className="flex flex-col mb-2">
-            <label
-              htmlFor="lastName"
-              className="text-black font-bold text-xl"
-            >
-              Last Name
-            </label>
-            <input
-              className="bg-gray-50 outline-none p-2 rounded-lg border-2 border-gray-600"
-              type="text"
-              name="lastName"
-              id="lastName"
-              placeholder="Enter Last Name"
-              {...register("lastName")}
-            />
-            <p className="text-red-600">{errors.lastName?.message}</p>
-          </div>
-          <div className="flex flex-col mb-2">
-            <label
-              htmlFor="emailID"
-              className="text-black font-bold text-xl"
-            >
+            <label htmlFor="emailID" className="text-black font-bold text-xl">
               Email
             </label>
             <input

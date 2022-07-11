@@ -13,11 +13,11 @@ const Homepage = (props) => {
 
     loadData();
   }, []);
-//   if (props.auth.user) {
+  if (props.auth.user) {
     if (loading) {
       return (
         <div className="flex flex-col items-center justify-center text-center">
-          <BounceLoader size={72} color="cyan" />
+          <BounceLoader size={72} color="black" />
         </div>
       );
     } else {
@@ -29,7 +29,7 @@ const Homepage = (props) => {
         </div>
       );
     }
-//   }
+  }
   return <NotFound />;
 };
 
