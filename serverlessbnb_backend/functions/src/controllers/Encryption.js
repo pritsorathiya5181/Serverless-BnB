@@ -7,7 +7,7 @@ router.post('/doDecryption', async (req, res) => {
     let lowerAlphas = Strings.ALPHABET.toLowerCase().split('')
     let upperAlphas = Strings.ALPHABET.toUpperCase().split('')
 
-    const encryptedCipher = cipherText
+    const decryptedCipher = cipherText
       .split('')
       .map((char) => {
         if (!lowerAlphas.includes(char) && !upperAlphas.includes(char)) {
@@ -16,25 +16,25 @@ router.post('/doDecryption', async (req, res) => {
             .send({ success: false, message: 'Error decypting text' })
         }
 
-        let lcEncryptIndex =
+        let lcDecryptIndex =
           (lowerAlphas.indexOf(char.toLowerCase()) - key) % 26
-        lcEncryptIndex =
-          lcEncryptIndex < 0 ? lcEncryptIndex + 26 : lcEncryptIndex
-        const lcEncryptedChar = lowerAlphas[lcEncryptIndex]
+        lcDecryptIndex =
+          lcDecryptIndex < 0 ? lcDecryptIndex + 26 : lcDecryptIndex
+        const lcDecryptedChar = lowerAlphas[lcDecryptIndex]
 
-        let ucEncryptIndex =
+        let ucDecryptIndex =
           (upperAlphas.indexOf(char.toUpperCase()) - key) % 26
-        ucEncryptIndex =
-          ucEncryptIndex < 0 ? ucEncryptIndex + 26 : ucEncryptIndex
-        const ucEncryptedChar = upperAlphas[ucEncryptIndex]
+        ucDecryptIndex =
+          ucDecryptIndex < 0 ? ucDecryptIndex + 26 : ucDecryptIndex
+        const ucDecryptedChar = upperAlphas[ucDecryptIndex]
 
         return lowerAlphas.indexOf(char) !== -1
-          ? lcEncryptedChar
-          : ucEncryptedChar
+          ? lcDecryptedChar
+          : ucDecryptedChar
       })
       .join('')
 
-    if (plainText === encryptedCipher) {
+    if (plainText === decryptedCipher) {
       res
         .status(200)
         .send({ success: true, message: 'Authentication successful' })
