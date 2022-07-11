@@ -21,7 +21,7 @@ const Login = (props) => {
   async function onSubmit({ email, password }) {
     try {
       const user = await Auth.signIn(email, password);
-      navigate("/home");
+      navigate("/security");
       props.auth.setAuthStatus(true);
       props.auth.setUser(user);
     } catch (error) {

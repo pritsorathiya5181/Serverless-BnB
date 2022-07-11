@@ -32,7 +32,7 @@ const Signup = () => {
   async function onSubmit({ userName, pswd, emailID }) {
     var maxNumber = 1000
     var randomNumber = Math.floor(Math.random() * maxNumber + 1)
-    var customerID = 'CU' + JSON.stringify(randomNumber)
+    var customerID = JSON.stringify(randomNumber)
     try {
       const signUpResponse = await Auth.signUp({
         username: userName,
@@ -130,7 +130,7 @@ const Signup = () => {
           </label>
 
           <FormControl
-            sx={{ minWidth: 120, borderColor: 'black' }}
+            sx={{ borderColor: 'black' }}
             size='small'
           >
             <InputLabel id='demo-select-small'>Security Question</InputLabel>
@@ -142,12 +142,7 @@ const Signup = () => {
               onChange={(e) => {
                 setQuestion(e.target.value)
               }}
-              className='border-2 border-gray-600'
-              // sx={{
-              //   borderColor: 'gray',
-              //   borderRadius: '5px',
-              //   borderWidth: '2px',
-              // }}
+            //   className='border-2 border-gray-600'
             >
               {MENU.SECURITY_QUESTIONS.map((que, index) => (
                 <MenuItem value={10}>{que}</MenuItem>
@@ -160,11 +155,10 @@ const Signup = () => {
           </label>
 
           <TextField
+            size='small'
             id='outlined-basic'
             label='Provide Answer'
-            variant='outlined'
             value={answer}
-            // className='border-2 border-gray-600'
             onChange={(e) => setAnswer(e.target.value)}
           />
 

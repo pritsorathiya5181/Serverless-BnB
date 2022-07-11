@@ -10,6 +10,7 @@ import Signup from './pages/signup'
 import Forgot from './pages/forgot'
 import Reset from './pages/reset'
 import NotFound from './pages/404'
+import Security from './pages/security';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useState, useEffect, useSearchParams } from 'react'
@@ -65,9 +66,10 @@ function App() {
             <Route path='/home' element={<Homepage auth={authProps} />} />
             <Route path='/forgot' element={<Forgot auth={authProps} />} />
             <Route path='/reset' element={<Reset auth={authProps} />} />
+            <Route path='/security' element={<Security auth={authProps} />} />
             <Route path='*' element={<NotFound />} />
             <Route
-              path='/casercipher'
+              path='/caesarcipher'
               element={<CaesarCipher auth={authProps} />}
             />
             <Route path='/chatbot' element={<Chatbot auth={authProps} />} />
