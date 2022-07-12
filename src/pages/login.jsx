@@ -21,9 +21,8 @@ const Login = (props) => {
   async function onSubmit({ email, password }) {
     try {
       const user = await Auth.signIn(email, password);
-      navigate("/security");
-      props.auth.setAuthStatus(true);
       props.auth.setUser(user);
+      navigate("/security");
     } catch (error) {
       toast.error("Incorrect Email & Password");
       console.log(error);

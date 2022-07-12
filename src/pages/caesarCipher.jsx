@@ -7,10 +7,12 @@ import { toast } from "react-toastify";
 import { Auth } from "aws-amplify";
 import { useNavigate } from "react-router-dom";
 
-const CaesarCipher = () => {
+const CaesarCipher = (props) => {
   let navigate = useNavigate();
   const [text, setText] = React.useState("Hello World!");
-  const [key, setKey] = React.useState("3");
+  const secretKey = props.auth.user.attributes["custom:customer"]
+    ? parseInt(props.auth.user.attributes["custom:customer"]) % 26
+    : 0;
 
   const validationSchema = Yup.object().shape({
     encryptText: Yup.string().required("Provide a valid encryption text"),
@@ -21,8 +23,7 @@ const CaesarCipher = () => {
 
   function makeid(length) {
     var result = "";
-    var characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -36,8 +37,40 @@ const CaesarCipher = () => {
 
   const { errors } = formState;
   async function onSubmit({ encryptText }) {
-    // write code to perform caesar cipher
     console.log(encryptText);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      cipherText: encryptText,
+      key: secretKey,
+      plainText: text,
+    });
+    console.log(raw);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://us-central1-serverlessbnb.cloudfunctions.net/Auth/doDecryption",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        if (result.success) {
+          props.auth.setAuthStatus(true);
+          toast.success(result.message);
+          navigate("/home");
+        } else {
+          toast.error("Invalid encrypted text!! Please try again");
+        }
+      })
+      .catch((error) => console.log("error", error));
   }
   return (
     <div className="flex flex-col items-center justify-center">
@@ -55,7 +88,8 @@ const CaesarCipher = () => {
           </p>
 
           <p className="text-2xl text-center mb-5 text-black font-bold">
-            Customer Number: 3
+            Customer Number: &nbsp;
+            {secretKey}
           </p>
 
           <label htmlFor="encryptText" className="text-black font-bold text-xl">
@@ -76,6 +110,16 @@ const CaesarCipher = () => {
           >
             Verify
           </button>
+          <p className="text-center text-black mt-3 font-bold">
+            Use link to decrypt: <br />
+          </p>
+          <a
+            className="text-center"
+            target="_blank"
+            href="https://www.dcode.fr/caesar-cipher"
+          >
+            https://www.dcode.fr/caesar-cipher
+          </a>
         </div>
       </form>
     </div>

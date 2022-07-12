@@ -19,7 +19,7 @@ export default function Navbar(props) {
     <nav className="flex flex-row items-center justify-between px-2 py-3 bg-black lg-sticky">
       <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
         <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-          {!props.auth.user && (
+          {!props.auth.isAuthenticated && (
             <a
               className="text-xl font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-white hover:text-gray-400"
               href="/login"
@@ -27,16 +27,16 @@ export default function Navbar(props) {
               Serverless B&B
             </a>
           )}
-          {props.auth.user && (
+          {props.auth.isAuthenticated && (
             <a
               className="text-xl font-bold font-satisfy leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-white hover:text-red-300"
               href="/home"
             >
-              WOC
+              Serverless B&B
             </a>
           )}
         </div>
-        {!props.auth.user && (
+        {!props.auth.isAuthenticated && (
           <div>
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="nav-item">
@@ -50,7 +50,7 @@ export default function Navbar(props) {
             </ul>
           </div>
         )}
-        {props.auth.user && (
+        {props.auth.isAuthenticated && (
           <div>
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="nav-item">
