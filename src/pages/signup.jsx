@@ -29,6 +29,40 @@ const Signup = () => {
   })
   const { errors } = formState
 
+  function storeSecurityQuestions(userName, customerID) {
+    return new Promise((resolve, reject) => {
+      var myHeaders = new Headers()
+      myHeaders.append('Content-Type', 'application/json')
+
+      var raw = JSON.stringify({
+        customerId: customerID,
+        userName: userName,
+        questions: [question],
+        answers: [answer],
+      })
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      }
+
+      fetch(
+        'https://us-central1-serverlessbnb.cloudfunctions.net/Auth/addAnswers',
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          if (!result.success) {
+            toast.error(result.message)
+          }
+          resolve(result)
+        })
+        .catch((error) => console.log('error', error))
+    })
+  }
+
   async function onSubmit({ userName, pswd, emailID }) {
     var maxNumber = 1000
     var randomNumber = Math.floor(Math.random() * maxNumber + 1)
@@ -42,6 +76,9 @@ const Signup = () => {
           'custom:customer': customerID,
         },
       })
+
+      const result = await storeSecurityQuestions(userName, customerID)
+
       toast.success('Verification lisk sent to registerd emailID.')
       setTimeout(navigate('/login'), 2000)
       console.log(signUpResponse)
@@ -129,10 +166,7 @@ const Signup = () => {
             Security Question
           </label>
 
-          <FormControl
-            sx={{ borderColor: 'black' }}
-            size='small'
-          >
+          <FormControl sx={{ borderColor: 'black' }} size='small'>
             <InputLabel id='demo-select-small'>Security Question</InputLabel>
             <Select
               labelId='demo-select-small'
@@ -142,10 +176,10 @@ const Signup = () => {
               onChange={(e) => {
                 setQuestion(e.target.value)
               }}
-            //   className='border-2 border-gray-600'
+              //   className='border-2 border-gray-600'
             >
-              {MENU.SECURITY_QUESTIONS.map((que, index) => (
-                <MenuItem value={10}>{que}</MenuItem>
+              {MENU.SECURITY_QUESTIONS.map((question, index) => (
+                <MenuItem value={question}>{question}</MenuItem>
               ))}
             </Select>
           </FormControl>
