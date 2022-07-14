@@ -22,6 +22,7 @@ const Login = (props) => {
     try {
       const user = await Auth.signIn(email, password);
       props.auth.setUser(user);
+      localStorage.setItem('userId',props.auth.user.username);
       navigate("/security");
     } catch (error) {
       toast.error("Incorrect Email & Password");

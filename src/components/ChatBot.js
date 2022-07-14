@@ -19,12 +19,13 @@ Amplify.configure({
 });
 
 const ChatBot = () => {
+  const msg='Hi '+localStorage.getItem('userId')+'! How can I help you?'
   return (
     <div>
       <AmplifyChatbot
         title="ServerlessBB"
         botName="BookTrip_dev"
-        welcomeMessage="How can I help you?"
+        welcomeMessage={msg}
       />
     </div>
   );
