@@ -77,7 +77,7 @@ def delegate(session_attributes ,slots) :
     } 
  
 dishes_costs={'chicken':20,'mutton':22,'bread':5,'naan':3,'pav bhaji':18,'chole':14,'fish':19,'paneer':21}    
-def save_order(dish,quantity):
+def save_order(dish,quantity,userId):
     id = str (uuid.uuid4())
     
     data=dyn_client.put_item(
@@ -96,16 +96,16 @@ def save_order(dish,quantity):
                 'S': str((int(quantity))*dishes_costs[dish])
             },
             'userId':{
-                'S': '7217721781221'
+                'S': userId
             }
         }
         
     )
     
     
-    ordered_dish={'id':id,'dish':dish,'quantity':quantity,'cost':str((int(quantity))*dishes_costs[dish]),'userId':'7217721781221'}
+    ordered_dish={'id':id,'dish':dish,'quantity':quantity,'cost':str((int(quantity))*dishes_costs[dish]),'userId':userId}
     print(ordered_dish)
-    saveInvoiceToS3('7217721781221',str(ordered_dish))   
+    saveInvoiceToS3(userId,str(ordered_dish))   
 
 def saveInvoiceToS3(userId,data):
     s3 = boto3.client('s3')
@@ -151,6 +151,7 @@ def take_order(intent_request) :
     slots = intent_request['currentIntent']['slots']
     dish = slots['dish']
     quantity = slots['quantity']
+    userId=slots['userId']
     
     session_attributes = intent_request['sessionAttributes'] if intent_request['sessionAttributes'] is not None else {}
     logger.debug(intent_request['invocationSource'])
@@ -170,7 +171,7 @@ def take_order(intent_request) :
             
         return delegate(session_attributes,intent_request['currentIntent']['slots'])
         
-    save_order(dish,quantity)   
+    save_order(dish,quantity,userId)   
     
     return close(
         session_attributes,

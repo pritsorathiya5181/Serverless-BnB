@@ -96,7 +96,7 @@ def delete_room(roomId) :
         }
     )    
     
-def update_room(type):
+def update_room(type,userId):
     id = str (uuid.uuid4())
 
     items = avlb_rooms(type)
@@ -119,16 +119,16 @@ def update_room(type):
                 'S':'No'
             },
             ':val2':{
-                'S': '82178782112'
+                'S': userId
             }
         }
     )
     
     print('data here:    ')
     print(data)
-    ordered_room={'id':roomId,'number':roomNumber,'type':type,'userId':'7217721781221'}
+    ordered_room={'id':roomId,'number':roomNumber,'type':type,'userId':userId}
     print(ordered_room)
-    saveInvoiceToS3('7217721781221',str(ordered_room))
+    saveInvoiceToS3(userId,str(ordered_room))
     
     return roomNumber
 
@@ -169,6 +169,7 @@ def customer_room(roomNumber,userId):
     
 def validate_order(slots):
     type=try_ex(lambda: slots['type'])
+    userId=try_ex(lambda: slots['userId'])
     roomNumber=try_ex(lambda: slots['roomNumber'])
     
     if type and not isvalid_room_type(type):
@@ -187,7 +188,7 @@ def validate_order(slots):
             'Sorry! This room-type is not available. Please try some other room-type.'
         )
         
-    cus_room=customer_room(roomNumber,'82178782112')  
+    cus_room=customer_room(roomNumber,userId)  
     
     if roomNumber and len(cus_room)==0:
         return build_validation_result(
@@ -209,6 +210,7 @@ def build_validation_result(isvalid ,violated_slot ,message_content) :
 def take_order(intent_request) :
     slots = intent_request['currentIntent']['slots']
     type = slots['type']
+    userId=slots['userId']
     
     session_attributes = intent_request['sessionAttributes'] if intent_request['sessionAttributes'] is not None else {}
     logger.debug(intent_request['invocationSource'])
@@ -228,7 +230,7 @@ def take_order(intent_request) :
             
         return delegate(session_attributes,intent_request['currentIntent']['slots'])
         
-    roomNumber=update_room(type)   
+    roomNumber=update_room(type,userId)   
     
     return close(
         session_attributes,
@@ -242,6 +244,7 @@ def take_order(intent_request) :
 def cancel_order(intent_request) :
     slots = intent_request['currentIntent']['slots']
     roomNumber = slots['roomNumber']
+    userId = slots['userId']
     
     session_attributes = intent_request['sessionAttributes'] if intent_request['sessionAttributes'] is not None else {}
     logger.debug(intent_request['invocationSource'])
@@ -262,7 +265,7 @@ def cancel_order(intent_request) :
             
         return delegate(session_attributes,intent_request['currentIntent']['slots'])
     
-    roomId=customer_room(roomNumber,'82178782112')[0]['id'] 
+    roomId=customer_room(roomNumber,userId)[0]['id'] 
     print(roomId)
     delete_room(roomId)   
     
