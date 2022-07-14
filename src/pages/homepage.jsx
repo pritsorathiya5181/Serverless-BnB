@@ -1,16 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Helmet } from "react-helmet";
-import { BounceLoader } from "react-spinners";
 import NotFound from "./404";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = (props) => {
+  const navigate = useNavigate();
+  const navigateTour = () => {
+    navigate("/tour");
+  };
+
+  const navigateOrder = () => {
+    navigate("/orders");
+  };
   if (props.auth.user) {
     return (
       <div className="flex flex-col items-center justify-center">
         <Helmet>
           <title>B&B | Home</title>
         </Helmet>
-        <h1 className="text-xl font-bold text-black">Welcome to Home Page</h1>
+        <div className="grid grid-cols-1 gap-3 w-full lg:w-96">
+          <div className="flex flex-col mb-2">
+            <button
+              onClick={navigateTour}
+              className="border-gray-600 text-black border-2 rounded-md font-bold text-xl hover:bg-gray-600 hover:text-white mt-4 p-2"
+              type="submit"
+            >
+              Search Tours
+            </button>
+            <button
+              onClick={navigateOrder}
+              className="border-gray-600 text-black border-2 rounded-md font-bold text-xl hover:bg-gray-600 hover:text-white mt-4 p-2"
+              type="submit"
+            >
+              Room and Food Details
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
