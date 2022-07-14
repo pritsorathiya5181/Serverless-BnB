@@ -35,7 +35,7 @@ const Orders = () => {
                 <div className="card-body">
                     <h5 className="card-title">ROOMS BOOKED : {rooms.Count} </h5>
                     <img className="card-img-top" src="https://source.unsplash.com/1x1?hotel,rooms" alt="Card image cap" />
-                    {rooms.Items != undefined ? (
+                    {rooms.Items !== undefined ? (
                         <>
                         <p className="card-title">NUMBER : <nbsp />
                             {rooms.Items[rooms.Count-1].number.S} , ...
