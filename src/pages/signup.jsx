@@ -78,12 +78,11 @@ const Signup = () => {
         body: raw,
         redirect: 'follow',
       }
-
       fetch(
         'https://tpuw7atnfudmtnxysalcl7blay0vkfdc.lambda-url.us-east-1.on.aws/',
         requestOptions
       )
-        .then((response) => response.text())
+        .then((response) => response.json())
         .then((result) => resolve(result))
         .catch((error) => console.log('error', error))
     })
@@ -104,9 +103,11 @@ const Signup = () => {
       })
 
       await storeSecurityQuestions(userName, customerID)
-      await subscribeEmailService(emailID)
+      const resu = await subscribeEmailService(emailID)
 
       toast.success('Verification lisk sent to registerd emailID.')
+      console.log(resu)
+
       setTimeout(navigate('/login'), 2000)
       console.log(signUpResponse)
     } catch (error) {
