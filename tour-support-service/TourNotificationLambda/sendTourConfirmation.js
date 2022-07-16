@@ -18,7 +18,7 @@ exports.handler = async (event) => {
     })
 
     const snsParams = {
-      Subject: 'Complaint status changed',
+      Subject: 'Booked tour package',
       Message: `Hello, \nHope you are doing fine! \nplease find the details of final tour booking!!
       \n\nPlace City: ${body.placeCity}\nPlace Name: ${body.placeName}\nTour time: ${body.tourTime}\nTour Price: ${body.tourPrice}`,
       TopicArn: 'arn:aws:sns:us-east-1:403229885123:ServerlessbnbSnsTopic',
