@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -63,6 +63,31 @@ const Signup = () => {
     })
   }
 
+  function subscribeEmailService(emailID) {
+    return new Promise((resolve, reject) => {
+      var myHeaders = new Headers()
+      myHeaders.append('Content-Type', 'application/json')
+
+      var raw = JSON.stringify({
+        email: emailID,
+      })
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      }
+      fetch(
+        'https://tpuw7atnfudmtnxysalcl7blay0vkfdc.lambda-url.us-east-1.on.aws/',
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => resolve(result))
+        .catch((error) => console.log('error', error))
+    })
+  }
+
   async function onSubmit({ userName, pswd, emailID }) {
     var maxNumber = 1000
     var randomNumber = Math.floor(Math.random() * maxNumber + 1)
@@ -77,9 +102,12 @@ const Signup = () => {
         },
       })
 
-      const result = await storeSecurityQuestions(userName, customerID)
+      await storeSecurityQuestions(userName, customerID)
+      const resu = await subscribeEmailService(emailID)
 
       toast.success('Verification lisk sent to registerd emailID.')
+      console.log(resu)
+
       setTimeout(navigate('/login'), 2000)
       console.log(signUpResponse)
     } catch (error) {
