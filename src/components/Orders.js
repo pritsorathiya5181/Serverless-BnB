@@ -41,99 +41,96 @@ const Orders = (props) => {
     console.log(rooms)
   }, [])
 
-  if (props.auth.user) {
-    return (
-      <div className='container'>
-        <div
-          className='card container'
-          style={{
-            width: 18 + 'rem',
-            top: 5 + 'rem',
-            position: 'relative',
-            right: 420 + 'px',
-          }}
-        >
-          <div className='card-body'>
-            <h5 className='card-title'>ROOMS BOOKED : {rooms.Count} </h5>
-            <img
-              className='card-img-top'
-              src='https://source.unsplash.com/1x1?hotel,rooms'
-              alt='Card image cap'
-            />
-            {rooms.Items !== undefined && rooms.Items.length > 0 ? (
-              <>
-                <p className='card-title'>
-                  NUMBER : <nbsp />
-                  {rooms.Items[rooms.Count - 1].number.S} , ...
-                </p>
+  return (
+    <div className='container'>
+      <div
+        className='card container'
+        style={{
+          width: 18 + 'rem',
+          top: 5 + 'rem',
+          position: 'relative',
+          right: 420 + 'px',
+        }}
+      >
+        <div className='card-body'>
+          <h5 className='card-title'>ROOMS BOOKED : {rooms.Count} </h5>
+          <img
+            className='card-img-top'
+            src='https://source.unsplash.com/1x1?hotel,rooms'
+            alt='Card image cap'
+          />
+          {rooms.Items !== undefined && rooms.Items.length > 0 ? (
+            <>
+              <p className='card-title'>
+                NUMBER : <nbsp />
+                {rooms.Items[rooms.Count - 1].number.S} , ...
+              </p>
 
-                <p className='card-title'>
-                  TYPE : <nbsp />
-                  {rooms.Items[rooms.Count - 1].type.S} , ...
-                </p>
+              <p className='card-title'>
+                TYPE : <nbsp />
+                {rooms.Items[rooms.Count - 1].type.S} , ...
+              </p>
 
-                <p className='card-title'>
-                  COST : <nbsp />
-                  {rooms.Items[rooms.Count - 1].cost.S} , ...
-                </p>
-              </>
-            ) : (
-              <div />
-            )}
-          </div>
-        </div>
-        <div
-          className='card container'
-          style={{
-            width: 18 + 'rem',
-            top: 5 + 'rem',
-            position: 'relative',
-            left: 10 + 'px',
-            top: -280 + 'px',
-          }}
-        >
-          <div className='card-body'>
-            <h5 className='card-title'>KITCHEN ORDERS : {food.Count}</h5>
-            <img
-              className='card-img-top'
-              src='https://source.unsplash.com/1x1?food'
-              alt='Card image cap'
-            />
-            {food.Items != undefined && food.Items.length > 0 ? (
-              <>
-                <p className='card-title'>
-                  DISHES : <nbsp />
-                  {food.Items[food.Count - 1].dish.S} , ...
-                </p>
-
-                <p className='card-title'>
-                  COST : <nbsp />
-                  {food.Items[food.Count - 1].cost.S} , ...
-                </p>
-
-                <p className='card-title'>
-                  QUANTITY : <nbsp />
-                  {food.Items[food.Count - 1].quantity.S} , ...
-                </p>
-              </>
-            ) : (
-              <div />
-            )}
-          </div>
-        </div>
-        <div
-          style={{
-            position: 'absolute',
-            right: 5,
-            top: 200,
-          }}
-        >
-          <Chatbot />
+              <p className='card-title'>
+                COST : <nbsp />
+                {rooms.Items[rooms.Count - 1].cost.S} , ...
+              </p>
+            </>
+          ) : (
+            <div />
+          )}
         </div>
       </div>
-    )
-  }
-  return <NotFound />
+      <div
+        className='card container'
+        style={{
+          width: 18 + 'rem',
+          top: 5 + 'rem',
+          position: 'relative',
+          left: 10 + 'px',
+          top: -280 + 'px',
+        }}
+      >
+        <div className='card-body'>
+          <h5 className='card-title'>KITCHEN ORDERS : {food.Count}</h5>
+          <img
+            className='card-img-top'
+            src='https://source.unsplash.com/1x1?food'
+            alt='Card image cap'
+          />
+          {food.Items != undefined && food.Items.length > 0 ? (
+            <>
+              <p className='card-title'>
+                DISHES : <nbsp />
+                {food.Items[food.Count - 1].dish.S} , ...
+              </p>
+
+              <p className='card-title'>
+                COST : <nbsp />
+                {food.Items[food.Count - 1].cost.S} , ...
+              </p>
+
+              <p className='card-title'>
+                QUANTITY : <nbsp />
+                {food.Items[food.Count - 1].quantity.S} , ...
+              </p>
+            </>
+          ) : (
+            <div />
+          )}
+        </div>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          right: 5,
+          top: 200,
+        }}
+      >
+        <Chatbot />
+      </div>
+    </div>
+  )
 }
 
 export default Orders
