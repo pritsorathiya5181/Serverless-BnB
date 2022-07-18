@@ -142,6 +142,20 @@ def saveInvoiceToS3(userId,data):
 def isvalid_room_type(type):
     types=['deluxe','semi-deluxe','basic'];
     return type.lower() in types
+
+def isvalid_user(userId):
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('userDetails')
+    print('table name here -----')
+    print(table)
+    
+    response = table.scan(
+        FilterExpression=Attr('userName').eq(userId) & Attr('status').eq('true')
+    )
+    items = response['Items']
+    print(response)
+    
+    return items     
     
 def avlb_rooms(type):  
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
@@ -187,6 +201,15 @@ def validate_order(slots):
             'type',
             'Sorry! This room-type is not available. Please try some other room-type.'
         )
+
+    usersLoggedIn=isvalid_user(userId)
+    
+    if userId and len(usersLoggedIn)==0:
+        return build_validation_result(
+            False,
+            'type',
+            'Please LogIn to continue with this feature.'
+        )    
         
     cus_room=customer_room(roomNumber,userId)  
     
