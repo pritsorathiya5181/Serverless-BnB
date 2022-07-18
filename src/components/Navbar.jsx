@@ -70,6 +70,14 @@ export default function Navbar(props) {
             <ul className='flex flex-col lg:flex-row list-none lg:ml-auto'>
               <li className='nav-item'>
                 <a
+                  className='text-xl font-bold font-satisfy leading-relaxed inline-block py-2 whitespace-nowrap text-white hover:text-red-300 ml-3'
+                  target={'_self'}
+                  href='/orders'
+                >
+                  Orders
+                </a>
+                &nbsp;&nbsp;&nbsp;
+                <a
                   className='text-xl font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-white hover:text-gray-400'
                   href='/login'
                 >
