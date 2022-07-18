@@ -11,6 +11,7 @@ export default function Navbar(props) {
       await updateLoginStatus()
       props.auth.setAuthStatus(false)
       props.auth.setUser(null)
+      localStorage.removeItem('userId')
       navigate('/login')
     } catch (error) {
       console.log(error.message)
