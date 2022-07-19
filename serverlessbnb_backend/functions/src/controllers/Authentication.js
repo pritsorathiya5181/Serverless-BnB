@@ -4,7 +4,7 @@ const { getFirestore } = require('firebase-admin/firestore')
 
 router.post('/addAnswers', async (req, res) => {
   const db = getFirestore()
-  const { customerId, userName, questions, answers } = req.body
+  const { customerId, userName, questions, answers, cipherKey } = req.body
 
   try {
     const docRef = db.collection(Strings.COLLECTION_NAME).doc(userName)
@@ -13,6 +13,7 @@ router.post('/addAnswers', async (req, res) => {
       questions: questions,
       customerId: customerId,
       answers: answers,
+      cipherKey: cipherKey,
     }
     await docRef.set(userData)
     res
@@ -105,44 +106,59 @@ router.post('/verifyAnswers', async (req, res) => {
 })
 
 router.post('/doDecryption', async (req, res) => {
-  const { cipherText, key, plainText } = req.body
+  const { cipherText, plainText, userName } = req.body
   try {
-    let lowerAlphas = Strings.ALPHABET.toLowerCase().split('')
-    let upperAlphas = Strings.ALPHABET.toUpperCase().split('')
+    const db = getFirestore()
+    const snapshot = await db
+      .collection(Strings.COLLECTION_NAME)
+      .doc(userName)
+      .get()
 
-    const decryptedCipher = cipherText
-      .split('')
-      .map((char) => {
-        if (!lowerAlphas.includes(char) && !upperAlphas.includes(char)) {
-          res
-            .status(400)
-            .send({ success: false, message: 'Error decypting text' })
-        }
+    if (snapshot.exists) {
+      const data = snapshot.data()
+      const { cipherKey: key } = data
 
-        let lcDecryptIndex =
-          (lowerAlphas.indexOf(char.toLowerCase()) - key) % 26
-        lcDecryptIndex =
-          lcDecryptIndex < 0 ? lcDecryptIndex + 26 : lcDecryptIndex
-        const lcDecryptedChar = lowerAlphas[lcDecryptIndex]
+      let lowerAlphas = Strings.ALPHABET.toLowerCase().split('')
+      let upperAlphas = Strings.ALPHABET.toUpperCase().split('')
 
-        let ucDecryptIndex =
-          (upperAlphas.indexOf(char.toUpperCase()) - key) % 26
-        ucDecryptIndex =
-          ucDecryptIndex < 0 ? ucDecryptIndex + 26 : ucDecryptIndex
-        const ucDecryptedChar = upperAlphas[ucDecryptIndex]
+      const decryptedCipher = cipherText
+        .split('')
+        .map((char) => {
+          if (!lowerAlphas.includes(char) && !upperAlphas.includes(char)) {
+            res
+              .status(400)
+              .send({ success: false, message: 'Error decypting text' })
+          }
 
-        return lowerAlphas.indexOf(char) !== -1
-          ? lcDecryptedChar
-          : ucDecryptedChar
-      })
-      .join('')
+          let lcDecryptIndex =
+            (lowerAlphas.indexOf(char.toLowerCase()) - key) % 26
+          lcDecryptIndex =
+            lcDecryptIndex < 0 ? lcDecryptIndex + 26 : lcDecryptIndex
+          const lcDecryptedChar = lowerAlphas[lcDecryptIndex]
 
-    if (plainText === decryptedCipher) {
-      res
-        .status(200)
-        .send({ success: true, message: 'Authentication successful' })
+          let ucDecryptIndex =
+            (upperAlphas.indexOf(char.toUpperCase()) - key) % 26
+          ucDecryptIndex =
+            ucDecryptIndex < 0 ? ucDecryptIndex + 26 : ucDecryptIndex
+          const ucDecryptedChar = upperAlphas[ucDecryptIndex]
+
+          return lowerAlphas.indexOf(char) !== -1
+            ? lcDecryptedChar
+            : ucDecryptedChar
+        })
+        .join('')
+
+      if (plainText === decryptedCipher) {
+        res
+          .status(200)
+          .send({ success: true, message: 'Authentication successful' })
+      } else {
+        res
+          .status(400)
+          .send({ success: false, message: 'Authentication failed' })
+      }
     } else {
-      res.status(400).send({ success: false, message: 'Authentication failed' })
+      res.status(400).send({ success: false, message: 'User does not exist' })
     }
   } catch (error) {
     console.log('ceaser cipher authentication error==', error)
