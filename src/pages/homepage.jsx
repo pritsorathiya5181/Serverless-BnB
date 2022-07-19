@@ -12,6 +12,12 @@ const Homepage = (props) => {
   const navigateOrder = () => {
     navigate("/orders");
   };
+  const navigateRoomVA = () => {
+    navigate("/roomVA");
+  };
+  const navigateKitchenVA = () => {
+    navigate("/kitchenVA");
+  };
   if (props.auth.user) {
     return (
       <div className="flex flex-col items-center justify-center">
@@ -33,6 +39,20 @@ const Homepage = (props) => {
               type="submit"
             >
               Room and Food Details
+            </button>
+            <button
+              onClick={navigateRoomVA}
+              className="border-gray-600 text-black border-2 rounded-md font-bold text-xl hover:bg-gray-600 hover:text-white mt-4 p-2"
+              type="submit"
+            >
+              Room Analysis
+            </button>
+            <button
+              onClick={navigateKitchenVA}
+              className="border-gray-600 text-black border-2 rounded-md font-bold text-xl hover:bg-gray-600 hover:text-white mt-4 p-2"
+              type="submit"
+            >
+              Kitchen Analysis
             </button>
           </div>
         </div>

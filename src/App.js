@@ -12,12 +12,13 @@ import Reset from "./pages/reset";
 import NotFound from "./pages/404";
 import Security from "./pages/security";
 import Tour from "./pages/tour";
+import RoomVA from "./pages/roomVA";
+import KitchenVA from "./pages/kitchenVA";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect, useSearchParams } from "react";
 import { Auth } from "aws-amplify";
 import CaesarCipher from "./pages/caesarCipher";
-
 
 function App() {
   const [userData, setUserData] = useState(null);
@@ -68,6 +69,8 @@ function App() {
             <Route path="/reset" element={<Reset auth={authProps} />} />
             <Route path="/security" element={<Security auth={authProps} />} />
             <Route path="/tour" element={<Tour auth={authProps} />} />
+            <Route path="/roomVA" element={<RoomVA auth={authProps} />} />
+            <Route path="/kitchenVA" element={<KitchenVA auth={authProps} />} />
             <Route path="*" element={<NotFound />} />
             <Route
               path="/caesarcipher"
