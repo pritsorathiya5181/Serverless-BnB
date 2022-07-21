@@ -23,18 +23,7 @@ const Reviews = (props) => {
     var params = {
         TableName: "feedback"
     }
-    useEffect(() => {
-        docClient.scan(params, function (err, data) {
-            if (!err) {
-                console.log(data);
-                setReviews(data.Items);
-                console.log(reviews);
-            }
-            else {
-                console.log(err);
-            }
-        })
-    }, []);
+    
 
 
 
