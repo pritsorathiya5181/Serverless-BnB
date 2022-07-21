@@ -17,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect, useSearchParams } from "react";
 import { Auth } from "aws-amplify";
 import CaesarCipher from "./pages/caesarCipher";
+import Notification from "./pages/notification";
 
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
             />
             <Route path="/chatbot" element={<Chatbot auth={authProps} />} />
             <Route path="/orders" element={<Orders auth={authProps} />} />
+            <Route path="/notification" element={<Notification auth={authProps} />} />
           </Routes>
         </div>
         <ToastContainer />
