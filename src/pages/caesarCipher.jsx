@@ -83,6 +83,7 @@ const CaesarCipher = (props) => {
 
       var raw = JSON.stringify({
         userName: props.auth.user.username,
+        email: props.auth.user.attributes.email,
         type: "login",
       });
 

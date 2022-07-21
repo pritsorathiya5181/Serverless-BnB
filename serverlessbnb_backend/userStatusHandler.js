@@ -1,140 +1,150 @@
-const AWS = require('aws-sdk')
-AWS.config.update({ region: 'us-east-1' })
+const AWS = require("aws-sdk");
+AWS.config.update({ region: "us-east-1" });
 
 exports.handler = async (event) => {
-  const body = JSON.parse(event.body)
+  const body = JSON.parse(event.body);
+  console.log(body);
   try {
-    var ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' })
+    var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
-    const isTableExist = await checkTable(ddb)
+    const isTableExist = await checkTable(ddb);
     if (!isTableExist) {
-      await createTable(ddb)
+      await createTable(ddb);
     }
 
-    await uploadItemToTable(body, ddb)
+    await uploadItemToTable(body, ddb);
   } catch (error) {
-    console.log('error==', error)
+    console.log("error==", error);
   }
 
   const response = {
     statusCode: 200,
-    body: JSON.stringify('Update user status successfully'),
-  }
-  return response
-}
+    body: JSON.stringify("Update user status successfully"),
+  };
+  return response;
+};
 
 const createTable = async (ddb) => {
   var ddbTableParams = {
     AttributeDefinitions: [
       {
-        AttributeName: 'userName',
-        AttributeType: 'S',
+        AttributeName: "userName",
+        AttributeType: "S",
+      },
+      {
+        AttributeName: "email",
+        AttributeType: "S",
       },
     ],
     KeySchema: [
       {
-        AttributeName: 'userName',
-        KeyType: 'HASH',
+        AttributeName: "userName",
+        KeyType: "HASH",
+      },
+      {
+        AttributeName: "email",
+        KeyType: "RANGE",
       },
     ],
     ProvisionedThroughput: {
       ReadCapacityUnits: 1,
       WriteCapacityUnits: 1,
     },
-    TableName: 'userDetails',
+    TableName: "userDetails",
     StreamSpecification: {
       StreamEnabled: false,
     },
-  }
+  };
 
   await ddb
     .createTable(ddbTableParams)
     .promise()
     .then((data) => {
-      return data
+      return data;
     })
     .catch((error) => {
-      console.log('Error', error)
-    })
-}
+      console.log("Error", error);
+    });
+};
 
 const checkTable = async (ddb) => {
-  console.log('Check table: ', 'userDetails')
+  console.log("Check table: ", "userDetails");
   var params = {
-    TableName: 'userDetails',
-  }
+    TableName: "userDetails",
+  };
 
   await ddb
     .describeTable(params)
     .promise()
     .then((data) => {
-      return 'true'
+      return "true";
     })
     .catch((error) => {
-      return 'false'
-    })
-}
+      return "false";
+    });
+};
 
 const uploadItemToTable = async (fileData, ddb) => {
   var getParams = {
-    TableName: 'userDetails',
+    TableName: "userDetails",
     Key: {
       userName: { S: fileData.userName },
     },
-  }
+  };
 
   // Call DynamoDB to read the item from the table
   const filteredItem = await ddb
     .getItem(getParams)
     .promise()
     .then((data) => {
-      return data.Item
+      return data.Item;
     })
     .catch((error) => {
-      console.log('Error', error)
-    })
-  var params
+      console.log("Error", error);
+    });
+  var params;
   if (filteredItem) {
     params = {
-      TableName: 'userDetails',
+      TableName: "userDetails",
       Key: {
         userName: { S: fileData.userName },
       },
-      UpdateExpression: 'set #a = :x',
+      UpdateExpression: "set #a = :x",
       ExpressionAttributeNames: {
-        '#a': 'status',
+        "#a": "status",
       },
       ExpressionAttributeValues: {
-        ':x': { S: fileData.type == 'login' ? 'true' : 'false' },
+        ":x": { S: fileData.type == "login" ? "true" : "false" },
       },
-    }
+    };
 
     const updateData = await ddb
       .updateItem(params)
       .promise()
       .then((data) => {
-        return data
+        return data;
       })
       .catch((error) => {
-        console.log('Error', error)
-      })
+        console.log("Error", error);
+      });
   } else {
     params = {
-      TableName: 'userDetails',
+      TableName: "userDetails",
       Item: {
         userName: { S: fileData.userName.toString() },
-        status: { S: 'true' },
+        email: { S: fileData.email.toString() },
+        status: { S: "true" },
       },
-    }
+    };
 
     await ddb
       .putItem(params)
       .promise()
       .then((data) => {
-        return data
+        return data;
       })
       .catch((error) => {
-        console.log('Error', error)
-      })
+        console.log("Error", error);
+      });
   }
-}
+};
