@@ -18,7 +18,6 @@ import { useState, useEffect, useSearchParams } from "react";
 import { Auth } from "aws-amplify";
 import CaesarCipher from "./pages/caesarCipher";
 import Notification from "./pages/notification";
-import Reviews from "./pages/reviews";
 
 
 function App() {
@@ -70,7 +69,6 @@ function App() {
             <Route path="/reset" element={<Reset auth={authProps} />} />
             <Route path="/security" element={<Security auth={authProps} />} />
             <Route path="/tour" element={<Tour auth={authProps} />} />
-            <Route path="/reviews" element={<Reviews auth={authProps} />} />
             <Route path="*" element={<NotFound />} />
             <Route
               path="/caesarcipher"
