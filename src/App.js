@@ -23,7 +23,6 @@ import CaesarCipher from "./pages/caesarCipher";
 import Notification from "./pages/notification";
 import Reviews from "./pages/reviews";
 
-
 function App() {
   const [userData, setUserData] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
