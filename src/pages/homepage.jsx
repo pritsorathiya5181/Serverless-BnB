@@ -12,6 +12,9 @@ const Homepage = (props) => {
   const navigateOrder = () => {
     navigate("/orders");
   };
+  const navigateReviews = () => {
+    navigate("/reviews");
+  };
   if (props.auth.user) {
     return (
       <div className="flex flex-col items-center justify-center">
@@ -33,6 +36,13 @@ const Homepage = (props) => {
               type="submit"
             >
               Room and Food Details
+            </button>
+            <button
+              onClick={navigateReviews}
+              className="border-gray-600 text-black border-2 rounded-md font-bold text-xl hover:bg-gray-600 hover:text-white mt-4 p-2"
+              type="submit"
+            >
+              Check Reviews
             </button>
           </div>
         </div>
