@@ -104,16 +104,24 @@ export default function Navbar(props) {
                   Orders
                 </a>
                 <a
+                  className="text-xl font-bold font-satisfy leading-relaxed inline-block py-2 whitespace-nowrap text-white hover:text-red-300 ml-3"
+                  href="/notification"
+                >
+                  Notification
+                </a>
+                <a
                   onClick={handleLogOut}
                   className="text-xl font-bold font-satisfy leading-relaxed inline-block py-2 whitespace-nowrap text-white hover:text-red-300 ml-3"
                   href="/login"
                 >
                   Logout
                 </a>
+                
               </li>
             </ul>
           </div>
         )}
+      
       </div>
     </nav>
   );
