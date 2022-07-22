@@ -15,6 +15,15 @@ const Homepage = (props) => {
   const navigateReviews = () => {
     navigate("/reviews");
   };
+  const navigateRoomVA = () => {
+    navigate("/roomVA");
+  };
+  const navigateKitchenVA = () => {
+    navigate("/kitchenVA");
+  };
+  const navigateUserVA = () => {
+    navigate("/userVA");
+  };
   if (props.auth.user) {
     return (
       <div className="flex flex-col items-center justify-center">
@@ -43,6 +52,27 @@ const Homepage = (props) => {
               type="submit"
             >
               Check Reviews
+            </button>
+            <button
+              onClick={navigateRoomVA}
+              className="border-gray-600 text-black border-2 rounded-md font-bold text-xl hover:bg-gray-600 hover:text-white mt-4 p-2"
+              type="submit"
+            >
+              Room Analysis
+            </button>
+            <button
+              onClick={navigateKitchenVA}
+              className="border-gray-600 text-black border-2 rounded-md font-bold text-xl hover:bg-gray-600 hover:text-white mt-4 p-2"
+              type="submit"
+            >
+              Kitchen Analysis
+            </button>
+            <button
+              onClick={navigateUserVA}
+              className="border-gray-600 text-black border-2 rounded-md font-bold text-xl hover:bg-gray-600 hover:text-white mt-4 p-2"
+              type="submit"
+            >
+              User Report
             </button>
           </div>
         </div>
