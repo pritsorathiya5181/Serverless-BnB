@@ -11,33 +11,33 @@ const columns = [
 
     { field: 'EventID', headerName: 'EventID', width: 150 },
 
-    {
-        field: 'TableName',
-        headerName: 'TableName',
-        width: 150,
-        editable: true,
-    }, {
-        field: 'Key',
-        headerName: 'TableKey',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'EventName',
-        headerName: 'EVENT',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'EventSourceARN',
-        headerName: 'EventSourceARN',
-        width: 150,
-        editable: true,
-    },
+    // {
+    //     field: 'TableName',
+    //     headerName: 'TableName',
+    //     width: 150,
+    //     editable: true,
+    // }, {
+    //     field: 'Key',
+    //     headerName: 'TableKey',
+    //     width: 150,
+    //     editable: true,
+    // },
+    // {
+    //     field: 'EventName',
+    //     headerName: 'EVENT',
+    //     width: 150,
+    //     editable: true,
+    // },
+    // {
+    //     field: 'EventSourceARN',
+    //     headerName: 'EventSourceARN',
+    //     width: 150,
+    //     editable: true,
+    // },
     {
         field: "message",
         headerName: "Message",
-        width: 200,
+        width: 400,
         editable: true,
     }
 ];
@@ -62,7 +62,7 @@ export default function Notification() {
     }, []);
     if (data.length>0) {
         for (const obj of data) {
-            obj.Key = JSON.stringify(obj.Key.id)
+            obj.Key = JSON.stringify(obj.Key)
             switch (obj.TableName) {
                 case "userDetails":
 
@@ -83,6 +83,13 @@ export default function Notification() {
 
                     break;
                 case "Tour":
+                    if (obj.EventName === "INSERT") obj.message = "Create tour successfully"
+                    else if (obj.EventName === "REMOVE") obj.message = "Delete tour successfully"
+                    else obj.message = "Update tour information successfully"
+
+                    break;
+                case "Confirm_tour_table":
+
                     if (obj.EventName === "INSERT") obj.message = "Create tour successfully"
                     else if (obj.EventName === "REMOVE") obj.message = "Delete tour successfully"
                     else obj.message = "Update tour information successfully"
