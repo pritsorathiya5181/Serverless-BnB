@@ -39,7 +39,6 @@ const Reviews = (props) => {
 
 
     return <>
-        {/* <button onClick={() => fetchDataFormDynamoDb()}> Fetch </button> */}
         <div className="App">
             <table class="table table-bordered table-striped table-responsive-stack" id="tableOne">
 
